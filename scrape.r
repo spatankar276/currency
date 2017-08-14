@@ -1,42 +1,46 @@
 
 
-json_file <- "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD"
+urlone <- "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms="
+urltwo <- "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms="
+u = c("USD")
 
 coinabv <- c("BTC","ETH","XRP","BCH","MIOTA","LTC","NEO","XEM","DASH","ETC","XMR","BCC","STRAT","WAVES","ZEC","BTS","STEEM","LSK")
 
-i = 1
-while(TRUE){
-  if (i > 29){
 
-  break          
+n = 1
+while(TRUE){
+
+  if (n > 20){
+
+  break
 
   }
-   
-  coinabv[2]        
-  data <- RJSONIO::fromJSON(json_file)
 
-  currency <- c('Time', 'BTC', 'USD', 'Current')
-  df = data.frame(data)
+  monkeyone <- paste(urlone,coinabv[n])
+  monkeytwo <- paste(urltwo,u)
 
-  btc <- df[1,1]
-  usd <- df[2,1]
-  price <- df[2,1]/df[1,1]
+  dataone <- RJSONIO::fromJSON(monkeyone)
+  datatwo <- RJSONIO::fromJSON(monkeytwo)
 
-  x <- c(btc, usd, price)
+  do = data.frame(dataone)
+  dt = data.frame(datatwo)
+  
+  
+  cur <- do[1,1]
+  us <- dt[1,1]
+  price <- dt[1,1]/do[1,1]
 
-  names(x) <- c('BTC', 'USD', 'Price')
+  x <- c(coinabv[n],cur,us,price, Sys.time())
+  names(x) <- ('Currency Name','Currency Price','USD','Price','Time')
+  x
+  n = n + 1
+  Sys.sleep(time = 1)
 
-  dog<- Sys.time()
 
+  }
 
+	
 
-  x[["Time"]] <- c(Sys.time())
-    
-
-  print(x)
-  Sys.sleep(time = 5) #Time in seconds
-
-  i = i + 1
-}
+  
 
 
